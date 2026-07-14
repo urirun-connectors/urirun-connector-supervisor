@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: urirun-connector-supervisor
+Version: 0.1.0
+Summary: Nadzorca IDE: obserwuje okna IDE hosta, wykrywa done/waiting, popycha agenty do przodu
+Requires-Python: >=3.10
+Requires-Dist: urirun
+Requires-Dist: litellm

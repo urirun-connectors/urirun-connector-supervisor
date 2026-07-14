@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "urirun-connector-supervisor"
+version = "0.1.0"
+description = "Nadzorca IDE: obserwuje okna IDE hosta, wykrywa done/waiting, popycha agenty do przodu"
+requires-python = ">=3.10"
+dependencies = ["urirun", "litellm"]
+[project.entry-points."urirun.bindings"]
+supervisor = "urirun_connector_supervisor.core:urirun_bindings"
+[tool.setuptools]
+packages = ["urirun_connector_supervisor"]

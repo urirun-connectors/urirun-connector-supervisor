@@ -1,0 +1,10 @@
+pyproject.toml
+tests/test_supervisor.py
+urirun_connector_supervisor/__init__.py
+urirun_connector_supervisor/core.py
+urirun_connector_supervisor.egg-info/PKG-INFO
+urirun_connector_supervisor.egg-info/SOURCES.txt
+urirun_connector_supervisor.egg-info/dependency_links.txt
+urirun_connector_supervisor.egg-info/entry_points.txt
+urirun_connector_supervisor.egg-info/requires.txt
+urirun_connector_supervisor.egg-info/top_level.txt

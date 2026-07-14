@@ -1,0 +1,2 @@
+[urirun.bindings]
+supervisor = urirun_connector_supervisor.core:urirun_bindings
