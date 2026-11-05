@@ -112,3 +112,25 @@ def test_push_window_escalates_and_aborts_when_no_executor(monkeypatch):
 def test_push_window_dry_run_no_action():
     r = core.push_window({"app": "X", "click_xy": [1, 2]}, push=False)
     assert r["executor"] == "dry" and not r["ok"]
+
+
+def test_vision_with_oqllm_docker(monkeypatch):
+    """Verify supervisor vision extraction through local OQLLM Docker instance."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:11437/health", timeout=1.0) as resp:
+            if resp.status != 200:
+                return
+    except Exception:
+        return
+
+    monkeypatch.setenv("SUPERVISOR_LLM_API_BASE", "http://127.0.0.1:11437/v1")
+    monkeypatch.setenv("SUPERVISOR_VISION_MODEL", "oqlos/system-one-router")
+    monkeypatch.setenv("SUPERVISOR_LLM_API_KEY", "oqllm_live_loopback_root")
+
+    b64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+    prompt = "proc://supervisor/host/query/detect"
+    res = core._vision(b64, prompt)
+    assert isinstance(res, dict)
+    assert res.get("selected_uri") == "proc://supervisor/host/query/detect"
+
