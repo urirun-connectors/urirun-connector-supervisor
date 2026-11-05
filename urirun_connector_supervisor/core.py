@@ -143,7 +143,7 @@ def _capture_host(monitor: int = 0) -> tuple[str, int, int]:
 def _vision(b64: str, prompt: str) -> dict:
     import litellm
     model = os.environ.get("SUPERVISOR_VISION_MODEL") or _VISION_MODEL
-    api_base = os.environ.get("SUPERVISOR_LLM_API_BASE") or os.environ.get("URIRUN_LLM_API_BASE") or os.environ.get("OPENAI_API_BASE")
+    api_base = os.environ.get("SUPERVISOR_LLM_API_BASE") or os.environ.get("URIRUN_LLM_API_BASE")
     if api_base and not (model.startswith("openai/") or model.startswith("openrouter/")):
         model = f"openai/{model}"
     kwargs: dict[str, Any] = {
@@ -161,8 +161,8 @@ def _vision(b64: str, prompt: str) -> dict:
     }
     if api_base:
         kwargs["api_base"] = api_base
-    api_key = os.environ.get("SUPERVISOR_LLM_API_KEY") or os.environ.get("OQLLM_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    if api_key:
+    api_key = os.environ.get("SUPERVISOR_LLM_API_KEY") or os.environ.get("URIRUN_LLM_API_KEY") or os.environ.get("OQLLM_API_KEY")
+    if api_base and api_key:
         kwargs["api_key"] = api_key
 
     resp = litellm.completion(**kwargs)
