@@ -142,30 +142,9 @@ def _capture_host(monitor: int = 0) -> tuple[str, int, int]:
 
 def _vision(b64: str, prompt: str) -> dict:
     import litellm
-    model = os.environ.get("SUPERVISOR_VISION_MODEL") or _VISION_MODEL
-    api_base = os.environ.get("SUPERVISOR_LLM_API_BASE") or os.environ.get("URIRUN_LLM_API_BASE") or os.environ.get("OPENAI_API_BASE")
-    if api_base and not (model.startswith("openai/") or model.startswith("openrouter/")):
-        model = f"openai/{model}"
-    kwargs: dict[str, Any] = {
-        "model": model,
-        "temperature": 0.1,
-        "messages": [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt},
-                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}},
-                ],
-            }
-        ],
-    }
-    if api_base:
-        kwargs["api_base"] = api_base
-    api_key = os.environ.get("SUPERVISOR_LLM_API_KEY") or os.environ.get("OQLLM_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    if api_key:
-        kwargs["api_key"] = api_key
-
-    resp = litellm.completion(**kwargs)
+    resp = litellm.completion(model=_VISION_MODEL, temperature=0.1, messages=[{"role": "user", "content": [
+        {"type": "text", "text": prompt},
+        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}}]}])
     t = resp.choices[0].message.content or ""
     if "```" in t:
         t = t.split("```")[1].removeprefix("json").strip()
