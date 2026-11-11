@@ -1,3 +1,4 @@
+import pytest
 from urirun_connector_supervisor import core
 
 
@@ -120,9 +121,9 @@ def test_vision_with_oqllm_docker(monkeypatch):
     try:
         with urllib.request.urlopen("http://127.0.0.1:11437/health", timeout=1.0) as resp:
             if resp.status != 200:
-                return
+                pytest.skip("OQLLM Docker not healthy")
     except Exception:
-        return
+        pytest.skip("OQLLM Docker not reachable on 11437")
 
     monkeypatch.setenv("SUPERVISOR_LLM_API_BASE", "http://127.0.0.1:11437/v1")
     monkeypatch.setenv("SUPERVISOR_VISION_MODEL", "oqlos/system-one-router")
